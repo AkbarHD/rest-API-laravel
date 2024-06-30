@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostDetailResource;
 use App\Http\Resources\PostrResource;
 use App\Models\Post;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -27,5 +28,17 @@ class PostController extends Controller
 
         // ini sbernya juga bsua menggunakan PostResource, cmn karena saya ingin membedakan dari segi api jadi menggunakan PostDetailResource
         return new PostDetailResource($post); // kalo 1 data dia tdk perlu collection dan perlu ditambahkan new
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required',
+            'news_content' => 'required',
+        ]);
+
+        $validated['author'] = auth()->user()->id;
+        $post = Post::create($validated);
+        return new PostDetailResource($post->loadMissing('User:id,username,email')); // $post->loadMissing('User:id,username,email' utk menampilkan ketika kita berhasil bikin berita
     }
 }

@@ -20,9 +20,12 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/posts', [PostController::class, 'index'])->middleware(['auth:sanctum']); // user tdk boleh akses ini jika belum login atau tidak punya token
-Route::get('/posts/{id}', [PostController::class, 'show'])->middleware(['auth:sanctum']);
+Route::get('/posts/{id}', [PostController::class, 'show']);
+Route::get('/posts', [PostController::class, 'index']); // user tdk boleh akses ini jika belum login atau tidak punya token
 
-Route::post('/login', [AuthenticationController::class, 'login']);
-Route::get('/logout', [AuthenticationController::class, 'logout'])->middleware(['auth:sanctum']);
-Route::get('/me', [AuthenticationController::class, 'me'])->middleware(['auth:sanctum']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/login', [AuthenticationController::class, 'login']);
+    Route::get('/logout', [AuthenticationController::class, 'logout']);
+    Route::get('/me', [AuthenticationController::class, 'me']);
+    Route::post('/posts/store', [PostController::class, 'store']);
+});

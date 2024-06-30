@@ -22,7 +22,8 @@ class PostrResource extends JsonResource
             'title' => $this->title,
             'news_content' => $this->news_content,
             'created_at' => date_format($this->created_at, "Y/m/d H:i:s"),
-            'author' => $this->user->username,
+            'author' => $this->User->username,
+            'writer' => $this->whenLoaded('User'), // sbnrnya sama aja
         ];
     }
 }
