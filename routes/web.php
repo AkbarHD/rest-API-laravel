@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/list-provinsi', function () {
+    // return ('list privinsi indonesia');
+    $response = Http::withHeaders([
+        'key' => 'd19c27e0d7ff4966d18cc47ddd5900ae',
+    ])->get('https://api.rajaongkir.com/starter/province');
+    // return $response->json();
+
+    dd($response->json()['rajaongkir']);
 });

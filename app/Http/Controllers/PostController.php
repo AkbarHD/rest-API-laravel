@@ -41,4 +41,13 @@ class PostController extends Controller
         $post = Post::create($validated);
         return new PostDetailResource($post->loadMissing('User:id,username,email')); // $post->loadMissing('User:id,username,email' utk menampilkan ketika kita berhasil bikin berita
     }
+
+    public function update(Request $request, $id)
+    {
+        // kita ga pengen user lain tidak boleh mengupdate data yang bukan miliknya
+        $validated = $request->validate([
+            'title' => 'required',
+            'news_content' => 'required',
+        ]);
+    }
 }

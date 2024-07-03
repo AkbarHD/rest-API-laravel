@@ -21,11 +21,13 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/posts/{id}', [PostController::class, 'show']);
-Route::get('/posts', [PostController::class, 'index']); // user tdk boleh akses ini jika belum login atau tidak punya token
+Route::get('/posts', [PostController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    // user tdk boleh akses ini jika belum login atau tidak punya token
     Route::post('/login', [AuthenticationController::class, 'login']);
     Route::get('/logout', [AuthenticationController::class, 'logout']);
     Route::get('/me', [AuthenticationController::class, 'me']);
     Route::post('/posts/store', [PostController::class, 'store']);
+    Route::patch('/posts/update/{id}', [PostController::class, 'update'])->middleware('pemilik-postingan');
 });
