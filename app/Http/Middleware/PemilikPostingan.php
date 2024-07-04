@@ -20,7 +20,7 @@ class PemilikPostingan
         $currentUser = auth()->user();
         $post = Post::find($request->id);
         if ($currentUser->id != $post->author) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Anda bikan pemilik postingan ini'], 401);
         }
         return $next($request);
     }

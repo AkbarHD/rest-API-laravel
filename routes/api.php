@@ -30,4 +30,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/me', [AuthenticationController::class, 'me']);
     Route::post('/posts/store', [PostController::class, 'store']);
     Route::patch('/posts/update/{id}', [PostController::class, 'update'])->middleware('pemilik-postingan');
+    Route::delete('/posts/delete/{id}', [PostController::class, 'destroy'])->middleware('pemilik-postingan');
 });

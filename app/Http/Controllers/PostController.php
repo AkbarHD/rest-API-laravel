@@ -49,5 +49,16 @@ class PostController extends Controller
             'title' => 'required',
             'news_content' => 'required',
         ]);
+
+        $post = Post::find($id);
+        $post->update($request->all()); // kalo request all itu semuanya di update
+        return new PostDetailResource($post->loadMissing('User:id,username,email')); // $post->loadMissing('User:id,username,email' utk menampilkan ketika kita berhasil bikin berita
+    }
+
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return new PostDetailResource($post->loadMissing('User:id,username,email'));
     }
 }
