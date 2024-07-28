@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('books', [BookController::class, 'index'])->name('books');
+Route::get('export-pdf', [BookController::class, 'exportPdf'])->name('export-pdf');
 
 Route::get('/list-provinsi', function () {
     // return ('list privinsi indonesia');
