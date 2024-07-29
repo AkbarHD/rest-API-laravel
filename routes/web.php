@@ -21,6 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('books', [BookController::class, 'index'])->name('books');
+Route::get('books/export/excel', [BookController::class, 'export_excel'])->name('books')->name('export-excell');
 Route::get('export-pdf', [BookController::class, 'exportPdf'])->name('export-pdf');
 
 Route::get('/list-provinsi', function () {

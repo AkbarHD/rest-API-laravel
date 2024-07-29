@@ -14,8 +14,9 @@
         <div class="col-md-8">
             <div>
                 <a href="{{ route('export-pdf') }}" class="btn btn-danger fw-bold mb-3">Eksport PDF</a>
+                <a href="{{ url('books/export/excel') }}" class="btn btn-success fw-bold mb-3">Eksport Excell</a>
             </div>
-            <table class="table table-striped table-bordered">
+            {{-- <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -38,7 +39,8 @@
                     @empty
                     @endforelse
                 </tbody>
-            </table>
+            </table> --}}
+            @include('book-excel')
         </div>
     </div>
 </div>

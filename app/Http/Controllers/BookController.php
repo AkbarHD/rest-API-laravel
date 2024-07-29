@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportBook;
 use App\Models\Books;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BookController extends Controller
 {
@@ -24,5 +26,10 @@ class BookController extends Controller
             'books' => $books
         ]);
         return $pdf->download('export-book-' . Carbon::now() . '.pdf');
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new ExportBook, 'books.xlsx');
     }
 }
