@@ -20,6 +20,7 @@ class AuthenticationController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Data kamu tidak terdaftar di database'],

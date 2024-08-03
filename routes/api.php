@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::get('/posts', [PostController::class, 'index']);
+Route::post('/login', [AuthenticationController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     // user tdk boleh akses ini jika belum login atau tidak punya token
-    Route::post('/login', [AuthenticationController::class, 'login']);
     Route::get('/logout', [AuthenticationController::class, 'logout']);
     Route::get('/me', [AuthenticationController::class, 'me']);
     Route::post('/posts/store', [PostController::class, 'store']);
