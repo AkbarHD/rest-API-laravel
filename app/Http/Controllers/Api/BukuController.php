@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Buku;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BukuController extends Controller
 {
@@ -26,7 +27,30 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Buku();
+        $rules = [
+            'judul' => 'required',
+            'pengarang' => 'required',
+            'tanggal_publikasi' => 'required|date',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'gagal memasukan data',
+                'data' => $validator->errors()
+            ], 400);
+        }
+        $data->judul = $request->judul;
+        $data->pengarang = $request->pengarang;
+        $data->tanggal_publikasi = $request->tanggal_publikasi;
+        $post = $data->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data ditambahkan',
+            // 'data' => $post
+        ], 200);
     }
 
     /**
@@ -34,7 +58,20 @@ class BukuController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Buku::find($id);
+        if ($data) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Data ditemukan',
+                'data' => $data
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan',
+                'data' => null
+            ], 404);
+        }
     }
 
     /**
@@ -42,7 +79,39 @@ class BukuController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = Buku::find($id);
+
+        if (empty($data)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan',
+                'data' => null
+            ], 404);
+        }
+        $rules = [
+            'judul' => 'required',
+            'pengarang' => 'required',
+            'tanggal_publikasi' => 'required|date',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'gagal update data',
+                'data' => $validator->errors()
+            ], 400);
+        }
+        $data->judul = $request->judul;
+        $data->pengarang = $request->pengarang;
+        $data->tanggal_publikasi = $request->tanggal_publikasi;
+        $post = $data->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data diupdate',
+            // 'data' => $post
+        ], 200);
+        // return view('anje;y');
     }
 
     /**

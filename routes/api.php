@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\BukuController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +34,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::patch('/posts/update/{id}', [PostController::class, 'update'])->middleware('pemilik-postingan');
     Route::delete('/posts/delete/{id}', [PostController::class, 'destroy'])->middleware('pemilik-postingan');
 });
+
+Route::get('/buku', [BukuController::class, 'index']);
+Route::get('/buku/{id}', [BukuController::class, 'show']);
+Route::post('/tambahbuku', [BukuController::class, 'store']);
+Route::put('/updatebuku/{id}', [BukuController::class, 'update']);
