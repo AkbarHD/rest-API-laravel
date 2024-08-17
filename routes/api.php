@@ -39,3 +39,4 @@ Route::get('/buku', [BukuController::class, 'index']);
 Route::get('/buku/{id}', [BukuController::class, 'show']);
 Route::post('/tambahbuku', [BukuController::class, 'store']);
 Route::put('/updatebuku/{id}', [BukuController::class, 'update']);
+Route::delete('/deletebuku/{id}', [BukuController::class, 'destroy']);

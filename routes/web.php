@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BukuController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+
 
 
 /*
@@ -33,3 +35,7 @@ Route::get('/list-provinsi', function () {
 
     dd($response->json()['rajaongkir']);
 });
+
+
+Route::get('/buku', [BukuController::class, 'index']);
+Route::post('/buku/store', [BukuController::class, 'store'])->name('buku.store');
