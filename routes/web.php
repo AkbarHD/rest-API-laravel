@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\PengirimanController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -39,3 +41,4 @@ Route::get('/list-provinsi', function () {
 
 Route::get('/buku', [BukuController::class, 'index']);
 Route::post('/buku/store', [BukuController::class, 'store'])->name('buku.store');
+
