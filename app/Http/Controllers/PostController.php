@@ -14,7 +14,8 @@ class PostController extends Controller
     public function index()
     {
         // $post = Post::all(); // jika tdk menggunakan tabel user sbg relasi
-        $post = Post::with(['User:id,username,email'])->get();
+        // $post = Post::with(['User:id,username,email'])->get();
+        $post = Post::with(['User:id,username,email'])->get()->loadMissing('User:id,username,email');
         // return response()->json(['data' => $post]); // ini manual
 
         // kalo mnggnkn ini bisa custom sesuka hati
@@ -38,6 +39,8 @@ class PostController extends Controller
         ]);
 
         $validated['author'] = auth()->user()->id;
+        $validated['title'] = $request->title;
+        $validated['news_content'] = $request->news_content;
         $post = Post::create($validated);
         return new PostDetailResource($post->loadMissing('User:id,username,email')); // $post->loadMissing('User:id,username,email' utk menampilkan ketika kita berhasil bikin berita
     }

@@ -38,7 +38,8 @@ Route::get('/list-provinsi', function () {
     dd($response->json()['rajaongkir']);
 });
 
-
-Route::get('/buku', [BukuController::class, 'index']);
-Route::post('/buku/store', [BukuController::class, 'store'])->name('buku.store');
+// akses api laravel
+Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
+// url tambah buku ini harus sama yaag di api.php
+Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
 
