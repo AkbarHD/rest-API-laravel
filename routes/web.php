@@ -42,4 +42,6 @@ Route::get('/list-provinsi', function () {
 Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
 // url tambah buku ini harus sama yaag di api.php
 Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
-
+Route::get('/buku/{id}', [BukuController::class, 'show'])->name('buku.show');
+Route::put('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
+Route::delete('/deletebuku/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');

@@ -15,17 +15,22 @@ class PostController extends Controller
     {
         // $post = Post::all(); // jika tdk menggunakan tabel user sbg relasi
         // $post = Post::with(['User:id,username,email'])->get();
-        $post = Post::with(['User:id,username,email'])->get()->loadMissing('User:id,username,email');
+        // with sama loadmissing sama
+        // $post = Post::with(['User:id,username,email,lastname'])->get()->loadMissing('User:id,username,email,lastname');
+        $post = Post::get();
         // return response()->json(['data' => $post]); // ini manual
 
         // kalo mnggnkn ini bisa custom sesuka hati
-        return PostrResource::collection($post); // otomatis tanpa di kasih key "data" dia sdh generetae sendiri
+        return PostrResource::collection($post->loadMissing(['User:id,username,email,lastname', 'Comments:id,post_id,user_id,comments_content'])); // otomatis tanpa di kasih key "data" dia sdh generetae sendiri
     }
 
     public function show($id)
     {
-        $post = Post::with('User:id,username,email')->findOrFail($id);
+        $post = Post::with('User:id,username,email,password,lastname,firstname')->find($id);
         // return response()->json(['data' => $post]);
+        if(!$post){
+            return response()->json(['message' => 'Data tidak ditemukan']);
+        }
 
         // ini sbernya juga bsua menggunakan PostResource, cmn karena saya ingin membedakan dari segi api jadi menggunakan PostDetailResource
         return new PostDetailResource($post); // kalo 1 data dia tdk perlu collection dan perlu ditambahkan new

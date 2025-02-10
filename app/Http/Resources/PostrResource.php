@@ -24,6 +24,18 @@ class PostrResource extends JsonResource
             'created_at' => date_format($this->created_at, "Y/m/d H:i:s"),
             'author' => $this->User->username,
             'writer' => $this->whenLoaded('User'), // sbnrnya sama aja
+            // comment
+            'komentar' => $this->whenLoaded('Comments', function(){
+                return collect($this->Comments)->each(function($comment){
+                    // ini merujuk ke Model Comment
+                    $comment->Comentator;
+                    return $comment;
+                });
+            }),
+            // 'total_comment' => $this->Comments->count(), // bisa juga seperti ini
+            'total_comment' => $this->whenLoaded('Comments', function(){
+                return $this->Comments->count();
+            }),
         ];
     }
 }

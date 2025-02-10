@@ -50,7 +50,6 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-
         $parameter = [
             'judul' => $request->judul,
             'pengarang' => $request->pengarang,
@@ -59,7 +58,9 @@ class BukuController extends Controller
 
         $client = new Client();
         $url = 'http://localhost:8000/api/buku';
+        // $url = 'http://localhost:8000/api/tambahbuku';
         try {
+            // tambah data
             $response = $client->request('POST', $url, [
                 'headers' => [
                     'Content-Type' => 'application/json'
@@ -67,6 +68,7 @@ class BukuController extends Controller
                 'body' => json_encode($parameter)
             ]);
 
+            // buat ambil jika eeror
             $content = $response->getBody()->getContents();
             $contentArray = json_decode($content, true);
 
@@ -90,7 +92,27 @@ class BukuController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $client = new Client();
+            $url = "http://localhost:8000/api/buku/$id";
+            $response = $client->request('GET', $url);
+            $content = $response->getBody()->getContents();
+            $contentArray = json_decode($content, true);
+
+            if ($contentArray['status'] == false) {
+                // Jika data tidak ditemukan, redirect dengan pesan error
+                return redirect()->route('buku.index')->with('error', $contentArray['message']);
+            }
+
+            // Jika data ditemukan, tampilkan form edit (misalnya)
+            return view('buku.index', [
+                'data' => $contentArray['data']
+            ]);
+
+        } catch (\Exception $e) {
+            // Tangkap error lainnya
+            return redirect()->route('buku.index')->with('error', 'Terjadi kesalahan saat mengambil data');
+        }
     }
 
     /**
@@ -98,7 +120,11 @@ class BukuController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        // $data = $contentArray['data'];
+        // return view('buku.index.', [
+        //     'data' => $data
+        // ]);
     }
 
     /**
@@ -106,7 +132,34 @@ class BukuController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $parameter = [
+            'judul' => $request->judul,
+            'pengarang' => $request->pengarang,
+            'tanggal_publikasi' => $request->tanggal_publikasi
+        ];
+
+        $client = new Client();
+        $url = "http://localhost:8000/api/buku/$id";
+        try {
+            $response = $client->request('PUT', $url, [
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ],
+                'body' => json_encode($parameter)
+            ]);
+            $content = $response->getBody()->getContents();
+            $contentArray = json_decode($content, true);
+            if ($contentArray['status'] != true) {
+                // Jika validasi gagal, ambil pesan error dari API
+                $errors = $contentArray['data']; // Ambil bagian pesan error dari API
+                return redirect()->back()->withErrors($errors)->withInput(); // Gunakan withErrors untuk menangani error
+            }
+            return redirect()->route('buku.index')->with('success', 'Data berhasil disimpan.');
+        } catch (\Exception $e) {
+            return redirect()->route('buku.index')->with('error', 'Terjadi kesalahan saat mengambil data');
+        }
+
+
     }
 
     /**
@@ -114,6 +167,17 @@ class BukuController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $client = new Client();
+        $url = "http://localhost:8000/api/deletebuku/$id";
+        $response = $client->request('DELETE', $url);
+
+        $content = $response->getBody()->getContents();
+        $contentArray = json_decode($content, true);
+        if ($contentArray['status'] != true) {
+            $error = $contentArray['data'];
+            return redirect()->route('buku.index')->with('error', $error);
+        } else {
+            return redirect()->route('buku.index')->with('success', 'Data berhasil dihapus.');
+        }
     }
 }

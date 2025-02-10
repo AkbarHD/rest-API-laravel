@@ -22,7 +22,10 @@ class PostDetailResource extends JsonResource
             'news_content' => $this->news_content,
             'created_at' => date_format($this->created_at, "Y/m/d H:i:s"),
             'author' => $this->User->username,
-            'writer' => $this->User, // kalo sperti ini bakalan muncuk semua agar bs muncul bbrp aja setting di with
+            'lastname' => $this->User->lastname, // kita bs ambil isi column table users, tergantung dari with([])
+            'firstname' => $this->User->firstname,
+            'password' => $this->User->password,
+            'writer' => $this->User, // kalo sperti ini bakalan muncul semua agar bs muncul bbrp aja setting di with
         ];
     }
 }

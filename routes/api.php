@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\BukuController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::post('/login', [AuthenticationController::class, 'login']);
 
+// punya cara fajar
 Route::middleware(['auth:sanctum'])->group(function () {
     // user tdk boleh akses ini jika belum login atau tidak punya token
     Route::get('/logout', [AuthenticationController::class, 'logout']);
@@ -33,11 +35,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/posts/store', [PostController::class, 'store']);
     Route::patch('/posts/update/{id}', [PostController::class, 'update'])->middleware('pemilik-postingan');
     Route::delete('/posts/delete/{id}', [PostController::class, 'destroy'])->middleware('pemilik-postingan');
+
+    // comment
+    Route::post('/comment', [CommentController::class, 'store']);
+    Route::patch('/comment/{id}', [CommentController::class, 'update'])->middleware('pemilik-komentar');
+    Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->middleware('pemilik-komentar');
 });
 
+// progamming dirumah affif
 Route::get('/buku', [BukuController::class, 'index']);
 Route::get('/buku/{id}', [BukuController::class, 'show']);
-// url tambah buku ini harus sama yaag di web.php
+// url tambah buku ini harus sama yaa di web.php
 Route::post('/buku', [BukuController::class, 'store']);
-Route::put('/updatebuku/{id}', [BukuController::class, 'update']);
+Route::put('/buku/{id}', [BukuController::class, 'update']);
 Route::delete('/deletebuku/{id}', [BukuController::class, 'destroy']);
