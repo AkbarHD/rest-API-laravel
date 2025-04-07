@@ -27,7 +27,6 @@ class PostrResource extends JsonResource
             // comment
             'komentar' => $this->whenLoaded('Comments', function(){
                 return collect($this->Comments)->each(function($comment){
-                    // ini merujuk ke Model Comment
                     $comment->Comentator;
                     return $comment;
                 });
